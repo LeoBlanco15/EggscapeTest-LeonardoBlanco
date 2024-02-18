@@ -2361,7 +2361,6 @@ namespace FishNet.Component.Transforming
         /// </summary>
         internal void ConfigureForCSP()
         {
-            _clientAuthoritative = false;
             if (base.IsServerInitialized)
                 _sendToOwner = false;
 
