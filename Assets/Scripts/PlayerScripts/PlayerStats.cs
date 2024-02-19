@@ -11,12 +11,19 @@ public class PlayerStats : NetworkBehaviour
     public TMP_Text uiDisplay;
 
 
-
+    /// <summary>
+    /// Is called from the collider to deal damage to the player
+    /// </summary>
+    /// <param name="damageAmount"></param>
     public void ReciveDamage(int damageAmount)
     {
         ReciveDamageServerRpc(damageAmount);
     }
 
+    /// <summary>
+    /// Substracts health from the player
+    /// </summary>
+    /// <param name="damageAmount"></param>
     [ObserversRpc]
     private void ReciveDamageObserversRpc(int damageAmount)
     {

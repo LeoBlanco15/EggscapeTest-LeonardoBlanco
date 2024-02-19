@@ -13,6 +13,7 @@ public class AttackCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //checks if the collision is a player other than self and then deals damage
         if (other.gameObject.tag != "Player" || other.gameObject == this.gameObject || damaged)
             return;
         PlayerStats aux = other.GetComponent<PlayerStats>();
@@ -20,7 +21,10 @@ public class AttackCollider : MonoBehaviour
         damaged = true;
     }
 
-
+    /// <summary>
+    /// once the damage is done it cannot deal damage again until its activated again
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator UnableAttack()
     {
         yield return new WaitForSeconds(0.5f);

@@ -13,6 +13,7 @@ public class PlayerController : NetworkBehaviour
     public float gravity;
     public float lookSpeed;
     public float lookXLimit;
+    public Animator animator;
 
     [SerializeField]
     CharacterController characterController;
@@ -24,6 +25,8 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField]
     private float cameraYOffset = 0.4f;
+    [SerializeField]
+    private float cameraZOffset = 0.4f;
     private Camera playerCamera;
 
 
@@ -34,7 +37,7 @@ public class PlayerController : NetworkBehaviour
         {
             
             playerCamera = Camera.main;
-            playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y + cameraYOffset, transform.position.z);
+            playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y + cameraYOffset, transform.position.z + cameraZOffset);
             playerCamera.transform.SetParent(transform);
         }
         else
@@ -75,6 +78,10 @@ public class PlayerController : NetworkBehaviour
         {
             moveDirection.y = movementDirectionY;
         }
+        if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
+            animator.SetBool("IsRunning", true);
+        else
+            animator.SetBool("IsRunning", false);
 
         if (!characterController.isGrounded)
         {
@@ -92,16 +99,5 @@ public class PlayerController : NetworkBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
-    }
-
-    [ObserversRpc]
-    private void AskForOwnershipObserverRpc()
-    {
-        GiveOwnership(base.Owner);
-    }
-    [ServerRpc]
-    private void AskForOwnershipServerRpc()
-    {
-        AskForOwnershipObserverRpc();
     }
 }
